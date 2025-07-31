@@ -35,7 +35,16 @@ class Distiller:
         # Example placeholder logic
         os.system(f"bash minillm/scripts/generic/tools/process_data_dolly.sh minillm {teacher_name}")
         print(f"Processing data for {teacher_name}")
-        return f"data/processed_data/dolly/*/{teacher_name}"
+    
+    def sft_teacher(self):
+        """
+        Perform Supervised Fine-Tuning on the teacher model.
+        """
+        if not self.sft_teacher:
+            return
+        print(f"Supervised Fine-Tuning for {self.teacher_model.name} at {self.teacher_model.checkpoint_path}")
+        os.system(f"bash minillm/scripts/generic/minillm/train_custom.sh minillm {self.teacher_model.name} {self.teacher_model.checkpoint_path}")
+
 
     def distill(self):
         """
@@ -47,6 +56,7 @@ class Distiller:
             raise FileNotFoundError("One or both models do not exist in the checkpoints directory.")
         print(f"Distilling from {self.teacher_model.name} to {self.student_model.name}")
         self.process_data_dolly(self.teacher_model.name)
+        self.sft_teacher()
 
 
         return "Bye"
