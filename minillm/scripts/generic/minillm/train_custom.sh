@@ -81,4 +81,5 @@ CMD="torchrun ${DISTRIBUTED_ARGS} ${BASE_PATH}/train_minillm.py ${OPTS} $@"
 
 echo ${CMD}
 echo "PYTHONPATH=${PYTHONPATH}"
-mkdir -p
+mkdir -p ${SAVE_PATH}
+${CMD}

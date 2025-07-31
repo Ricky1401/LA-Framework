@@ -15,8 +15,8 @@ To perform this:
 
 ```
 bash setup_env.sh
-huggingface-cli download gpt2 --repo-type model --local-dir /PATH_TO/LMOps/minillm/checkpoints/gpt2-base
-huggingface-cli download MiniLLM/dolly --repo-type dataset --local-dir /PATH_TO/LMOps/minillm/data/dolly/
+huggingface-cli download gpt2 --repo-type model --local-dir ./checkpoints/gpt2-base
+huggingface-cli download MiniLLM/dolly --repo-type dataset --local-dir ./data/dolly/
 bash scripts/gpt2/tools/process_data_dolly.sh /PATH_TO/LMOps/minillm
 bash scripts/gpt2/sft/sft_base.sh /PATH_TO/LMOps/minillm
 bash scripts/gpt2/minillm/train_base_xl_no_pt.sh /PATH_TO/LMOps/minillm

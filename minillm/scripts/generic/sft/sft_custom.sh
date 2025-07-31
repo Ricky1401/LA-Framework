@@ -9,9 +9,9 @@ NNODES=1
 NODE_RANK=0
 GPUS_PER_NODE=${5-1}
 
-BASE_PATH=${1-"/home/MiniLLM"}
+BASE_PATH=${1-"minillm"}
 CKPT_NAME=${2-"gpt2-base"}
-CKPT=${3-"${BASE_PATH}/checkpoints/${CKPT_NAME}/"}
+CKPT=${3-"${BASE_PATH}/../checkpoints/${CKPT_NAME}/"}
 
 DISTRIBUTED_ARGS="--nproc_per_node $GPUS_PER_NODE \
                   --nnodes $NNODES \
@@ -20,7 +20,7 @@ DISTRIBUTED_ARGS="--nproc_per_node $GPUS_PER_NODE \
                   --master_port $MASTER_PORT"
 
 # data
-DATA_DIR="${BASE_PATH}/processed_data/dolly/full/gpt2/"
+DATA_DIR="${BASE_PATH}/../results/processed_data/dolly/full/${CKPT_NAME}/"
 # hp
 BATCH_SIZE=2
 LR=0.0005
@@ -29,7 +29,7 @@ EVAL_BATCH_SIZE=8
 # length
 MAX_LENGTH=512
 # runtime
-SAVE_PATH="${BASE_PATH}/results/gpt2/train/sft"
+SAVE_PATH="${BASE_PATH}/../results/${CKPT_NAME}/train/sft"
 # seed
 SEED=10
 
