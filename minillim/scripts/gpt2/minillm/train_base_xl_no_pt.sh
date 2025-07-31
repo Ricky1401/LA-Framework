@@ -4,7 +4,7 @@ MASTER_ADDR=localhost
 MASTER_PORT=${2-2012}
 NNODES=1
 NODE_RANK=0
-GPUS_PER_NODE=${3-16}
+GPUS_PER_NODE=${3-1}
 
 DISTRIBUTED_ARGS="--nproc_per_node $GPUS_PER_NODE \
                   --nnodes $NNODES \
@@ -15,13 +15,13 @@ DISTRIBUTED_ARGS="--nproc_per_node $GPUS_PER_NODE \
 # model
 BASE_PATH=${1-"/home/MiniLLM"}
 CKPT_NAME="base-init"
-CKPT="${BASE_PATH}/results/gpt2/train/minillm_init/gpt2-base"
-TEACHER_CKPT_NAME="xlarge-sft"
-TEACHER_CKPT="${BASE_PATH}/results/gpt2/train/sft/gpt2-xlarge/"
+CKPT="${BASE_PATH}/checkpoints/gpt2-base"
+TEACHER_CKPT_NAME="base-self"
+TEACHER_CKPT="${BASE_PATH}/results/gpt2/train/sft/e1-bs2-lr0.0005-G1-N1-NN1/5717"
 # data
 PROMPT_DATA_DIR="${BASE_PATH}/processed_data/dolly/prompt/gpt2/"
 # runtime
-SAVE_PATH="${BASE_PATH}/results/gpt2/train/minillm/"
+SAVE_PATH="${BASE_PATH}/results/my_trial"
 # hp
 GRAD_ACC=1
 BATCH_SIZE=16

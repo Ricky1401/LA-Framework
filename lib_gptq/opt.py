@@ -464,7 +464,7 @@ if __name__ == '__main__':
 
     datasets = ['wikitext2', 'ptb', 'c4'] 
     if args.new_eval:
-      datasets = ['wikitext2', 'ptb-new', 'c4-new']
+        datasets = ['wikitext2', 'ptb-new', 'c4-new']
     datasets = ['c4'] 
     for dataset in datasets: 
         dataloader, testloader = get_loaders(
