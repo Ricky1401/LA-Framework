@@ -53,7 +53,7 @@ class Distiller:
             raise FileNotFoundError("One or both models do not exist in the checkpoints directory.")
         print(f"Distilling from {self.teacher_model.name} to {self.student_model.name}")
         #self.process_data_dolly()
-        self.perform_sft_teacher()
+        #self.perform_sft_teacher()
         os.system(f"bash minillm/scripts/generic/minillm/train_custom.sh minillm {self.student_model.name} {self.student_model.checkpoint_path} {self.teacher_model.name} {self.teacher_model.checkpoint_path}")
 
 
