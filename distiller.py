@@ -24,14 +24,11 @@ class Distiller:
         self.sft_teacher = True
         print("SFT mode enabled for teacher model.")
 
-    def process_data_dolly(self, teacher_name):
+    def process_data_dolly(self):
         """
         Process the data for the Dolly dataset.
-        Args:
-            teacher_name (str): Name of the teacher model.
-        Returns:
-            str: Path to the processed data.
         """
+        teacher_name = self.teacher_model.name
         print(f"Processing data for {teacher_name}")
         os.system(f"bash minillm/scripts/generic/tools/process_data_dolly.sh minillm {teacher_name}")
     
@@ -43,6 +40,7 @@ class Distiller:
             return
         print(f"Supervised Fine-Tuning for {self.teacher_model.name} at {self.teacher_model.checkpoint_path}")
         os.system(f"bash minillm/scripts/generic/sft/sft_custom.sh minillm {self.teacher_model.name} {self.teacher_model.checkpoint_path}")
+        self.teacher_model.checkpoint_path = f"results/{self.teacher_model.name}/train/sft/e1-bs2-lr0.0005-G1-N1-NN1/5717"
 
 
     def distill(self):
@@ -54,8 +52,9 @@ class Distiller:
         if not self.check_models():
             raise FileNotFoundError("One or both models do not exist in the checkpoints directory.")
         print(f"Distilling from {self.teacher_model.name} to {self.student_model.name}")
-        #self.process_data_dolly(self.teacher_model.name)
-        self.perform_sft_teacher()
+        #self.process_data_dolly()
+        #self.perform_sft_teacher()
+        os.system(f"bash minillm/scripts/generic/minillm/train_custom.sh minillm {self.student_model.name} {self.student_model.checkpoint_path} {self.teacher_model.name} {self.teacher_model.checkpoint_path}")
 
 
         return "Bye"
