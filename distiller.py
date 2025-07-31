@@ -54,7 +54,7 @@ class Distiller:
         if not self.check_models():
             raise FileNotFoundError("One or both models do not exist in the checkpoints directory.")
         print(f"Distilling from {self.teacher_model.name} to {self.student_model.name}")
-        self.process_data_dolly(self.teacher_model.name)
+        #self.process_data_dolly(self.teacher_model.name)
         self.perform_sft_teacher()
 
 
