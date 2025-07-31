@@ -33,7 +33,7 @@ class Distiller:
             str: Path to the processed data.
         """
         # Example placeholder logic
-        os.system(f"bash minillm/scripts/generic/tools/process_data_dolly.sh . {teacher_name}")
+        os.system(f"bash minillm/scripts/generic/tools/process_data_dolly.sh minillm {teacher_name}")
         print(f"Processing data for {teacher_name}")
         return f"data/processed_data/dolly/*/{teacher_name}"
 
