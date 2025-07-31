@@ -20,7 +20,7 @@ DISTRIBUTED_ARGS="--nproc_per_node $GPUS_PER_NODE \
                   --master_port $MASTER_PORT"
 
 # data
-DATA_DIR="${BASE_PATH}/../results/processed_data/dolly/full/${CKPT_NAME}/"
+DATA_DIR="${BASE_PATH}/../data/processed_data/dolly/full/${CKPT_NAME}/"
 # hp
 BATCH_SIZE=2
 LR=0.0005
