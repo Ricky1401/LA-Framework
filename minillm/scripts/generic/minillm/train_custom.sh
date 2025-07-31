@@ -21,7 +21,7 @@ DISTRIBUTED_ARGS="--nproc_per_node $GPUS_PER_NODE \
                   --master_addr $MASTER_ADDR \
                   --master_port $MASTER_PORT"
 
-PROMPT_DATA_DIR="${BASE_PATH}/../results/processed_data/dolly/prompt/${CKPT_NAME}/"
+PROMPT_DATA_DIR="${BASE_PATH}/../results/processed_data/dolly/prompt/${TEACHER_CKPT_NAME}/"
 SAVE_PATH="${BASE_PATH}/../results/distilled-${CKPT_NAME}"
 GRAD_ACC=1
 BATCH_SIZE=16
