@@ -1,4 +1,5 @@
 import os
+import shutil
 
 class Distiller:
     def __init__(self, teacher_model, student_model):
@@ -39,7 +40,8 @@ class Distiller:
         if not self.sft_teacher:
             return
         print(f"Supervised Fine-Tuning for {self.teacher_model.name} at {self.teacher_model.checkpoint_path}")
-        #os.system(f"bash minillm/scripts/generic/sft/sft_custom.sh minillm {self.teacher_model.name} {self.teacher_model.checkpoint_path}")
+        shutil.copy(self.teacher_model.checkpoint_path, f"results/{self.teacher_model.name}/train/sft/e1-bs2-lr0.0005-G1-N1-NN1/5717")
+        os.system(f"bash minillm/scripts/generic/sft/sft_custom.sh minillm {self.teacher_model.name} {self.teacher_model.checkpoint_path}")
         self.teacher_model.checkpoint_path = f"results/{self.teacher_model.name}/train/sft/e1-bs2-lr0.0005-G1-N1-NN1/5717"
 
 
