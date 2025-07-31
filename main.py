@@ -8,7 +8,7 @@ class Model:
 if __name__ == "__main__":
     # Example checkpoint paths (update as needed)
     teacher = Model("gpt2-base", "./checkpoints/gpt2-base")
-    student = Model("facebook/125m", "./checkpoints/facebook-125m")
+    student = Model("facebook-125m", "./checkpoints/facebook-125m")
 
     distiller = Distiller(teacher, student)
     distiller.enable_sft_teacher()
