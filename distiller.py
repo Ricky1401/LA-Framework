@@ -42,7 +42,7 @@ class Distiller:
         if not self.sft_teacher:
             return
         print(f"Supervised Fine-Tuning for {self.teacher_model.name} at {self.teacher_model.checkpoint_path}")
-        os.system(f"bash minillm/scripts/generic/minillm/train_custom.sh minillm {self.teacher_model.name} {self.teacher_model.checkpoint_path}")
+        os.system(f"bash minillm/scripts/generic/minillm/sft_custom.sh minillm {self.teacher_model.name} {self.teacher_model.checkpoint_path}")
 
 
     def distill(self):
