@@ -45,7 +45,7 @@ class Distiller:
         #os.system(f"bash minillm/scripts/generic/sft/sft_custom.sh minillm {self.teacher_model.name} {self.teacher_model.checkpoint_path}")
         self.teacher_model.checkpoint_path = f"results/{self.teacher_model.name}/train/sft/e1-bs2-lr0.0005-G1-N1-NN1/5717"
 
-    def fix_vocabulary(ckpt_path1, ckpt_path2):
+    def fix_vocabulary(self, ckpt_path1, ckpt_path2):
         """
         Loads tokenizers from two checkpoints, finds the smallest vocabulary size,
         resizes both models' embeddings, and saves the updated models and tokenizers
