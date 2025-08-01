@@ -16,9 +16,8 @@ from minillm import train, Reward
 from peft import PeftModel
 
 
-def get_teacher_model(args, device, vocab_size):
+def get_teacher_model(args, device):
     config = AutoConfig.from_pretrained(args.teacher_model_path)
-    config.vocab_size = vocab_size
     if args.model_parallel:
         config.is_model_parallel = True
         with init_empty_weights():
@@ -82,9 +81,8 @@ def main():
     if args.teacher_model_type is None:
         args.teacher_model_type = args.model_type
     
+    teacher_model = get_teacher_model(args, device)
     tokenizer = get_tokenizer(args)
-    teacher_model = get_teacher_model(args, device, tokenizer.vocab_size)
-    #tokenizer = get_tokenizer(args)
     
     reward = Reward(args, tokenizer, teacher_model)
     
