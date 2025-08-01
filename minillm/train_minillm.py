@@ -83,6 +83,7 @@ def main():
     
     teacher_model = get_teacher_model(args, device)
     tokenizer = get_tokenizer(args)
+    teacher_model.resize_token_embeddings(len(tokenizer))
     
     reward = Reward(args, tokenizer, teacher_model)
     
