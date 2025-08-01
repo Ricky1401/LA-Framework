@@ -66,7 +66,7 @@ class PPOSampler():
             
             # generate and compute rollout scores
             with torch.no_grad():
-                mode = "base"
+                mode = "teacher"
                 gen_out = self.trainer.generate(**batch, return_dict_in_generate=True, mode=mode, teacher_mixed_sample=(self.args.teacher_mixed_alpha is not None), output_scores=True)
                 full_ids = gen_out.sequences
                 response_ids = full_ids[:, query_ids.size(1):] # remove prompt (may include start token)
