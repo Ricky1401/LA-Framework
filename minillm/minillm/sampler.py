@@ -66,7 +66,7 @@ class PPOSampler():
             
             # generate and compute rollout scores
             with torch.no_grad():
-                mode = "teacher"
+                mode = "base"
                 gen_out = self.trainer.generate(**batch, return_dict_in_generate=True, mode=mode, teacher_mixed_sample=(self.args.teacher_mixed_alpha is not None), output_scores=True)
                 full_ids = gen_out.sequences
                 response_ids = full_ids[:, query_ids.size(1):] # remove prompt (may include start token)
@@ -107,7 +107,7 @@ class PPOSampler():
             # get logprobs and the importance sampling weight w
             with torch.no_grad():
                 if self.args.teacher_mixed_alpha is not None:
-                    _, raw_logprobs = self.trainer.compute_logits_and_log_probs(query_ids, response_ids, inf_mask=inf_mask, base="teacher") # raw_logprobs: compute using the new model
+                    _, raw_logprobs = self.trainer.compute_logits_and_log_probs(query_ids, response_ids, inf_mask=inf_mask, base="base") # raw_logprobs: compute using the new model
                     logprobs = raw_logprobs
                     mix_probs = (1 - self.args.teacher_mixed_alpha) * torch.exp(rollout_logprobs.float()) + self.args.teacher_mixed_alpha * torch.exp(t_rollout_logprobs.float())
                     mix_logprobs = torch.log(mix_probs)
