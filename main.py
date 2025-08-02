@@ -98,6 +98,7 @@ if __name__ == "__main__":
         args = generate_args()
         args.model_type = "opt"  # Example model type
         args.checkpoint_path = "./checkpoints/facebook-125m"  # Example checkpoint path
+        args.dataset = "c4"  # Example dataset
         args.wbits = 4  # Example bits for quantization
         args.save = "./results/quantized_model/facebook-125m"  # Example save path
 
