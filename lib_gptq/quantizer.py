@@ -3,6 +3,7 @@ from lib_gptq.datautils import *
 
 class Quantizer:
     def __init__(self, args, device="cuda"):
+        self.args = args
         self.model_type = args.model_type.lower()
         self.checkpoint_path = args.checkpoint_path
         self.device = device
@@ -29,12 +30,12 @@ class Quantizer:
             raise ValueError(f"Unsupported model type: {self.model_type}")
         
 
-    def quantize(self, args):
+    def quantize(self):
         dataloader = self.dataloader
-        save_path = args.save
+        save_path = self.args.save
         if self.model_type == "opt":
-            from lib_gptq.opt import opt_sequential
-            quantizers = opt_sequential(self.model, dataloader, self.device)
+            from lib_gptq.opt import opt_sequential_ext
+            quantizers = opt_sequential_ext(self.model, dataloader, self.device)
         elif self.model_type == "llama":
             from lib_gptq.llama import llama_sequential
             quantizers = llama_sequential(self.model, dataloader, self.device)

@@ -103,8 +103,7 @@ if __name__ == "__main__":
         args.save = "./results/quantized_model/facebook-125m"  # Example save path
 
         quantizer = Quantizer(args)
-        # Assuming dataloader is defined elsewhere
-        quantizer.quantize(args)
+        quantizer.quantize()
 
     elif method == "distillation":
         # Example checkpoint paths (update as needed)
