@@ -11,16 +11,16 @@ def generate_args():
 
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        'model_type', type=str, default='opt',
+        '--model_type', type=str, default='opt',
         choices=['opt', 'llama', 'bloom', 'gpt2'],
         help='Type of model to load; possible [opt,llama,bloom,gtp2].'
     )
     parser.add_argument(
-        'checkpoint_path', type=str, default='facebook/opt-125m',
+        '--checkpoint_path', type=str, default='facebook/opt-125m',
         help='Checkpoint of the model to load.'
     )
     parser.add_argument(
-        'dataset', type=str, default='c4', choices=['wikitext2', 'ptb', 'c4'],
+        '--dataset', type=str, default='c4', choices=['wikitext2', 'ptb', 'c4'],
         help='Where to extract calibration data from.'
     )
     parser.add_argument(
