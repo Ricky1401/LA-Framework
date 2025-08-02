@@ -104,7 +104,7 @@ if __name__ == "__main__":
 
         quantizer = Quantizer(args)
         # Assuming dataloader is defined elsewhere
-        quantizer.quantize(args.save)
+        quantizer.quantize(args)
 
     elif method == "distillation":
         # Example checkpoint paths (update as needed)
