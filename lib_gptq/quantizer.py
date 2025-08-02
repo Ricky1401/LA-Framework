@@ -1,4 +1,4 @@
-from lib_gptq.datautils import *
+from datautils import *
 
 
 class Quantizer:
