@@ -29,8 +29,8 @@ class Quantizer:
             raise ValueError(f"Unsupported model type: {self.model_type}")
         
 
-    def quantize(self, dataloader, save_path):
-
+    def quantize(self, save_path):
+        dataloader = self.dataloader
         if self.model_type == "opt":
             from lib_gptq.opt import opt_sequential
             quantizers = opt_sequential(self.model, dataloader, self.device)
