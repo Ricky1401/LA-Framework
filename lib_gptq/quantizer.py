@@ -1,4 +1,4 @@
-from datautils import *
+from lib_gptq.datautils import *
 
 
 class Quantizer:
@@ -23,10 +23,8 @@ class Quantizer:
             from lib_gptq.bloom import get_bloom
             return get_bloom(self.checkpoint_path).to(self.device)
         elif self.model_type == "gpt2":
-            from transformers import GPT2LMHeadModel
-            model = GPT2LMHeadModel.from_pretrained(self.checkpoint_path, torch_dtype='auto')
-            model.seqlen = model.config.n_positions
-            return model.to(self.device)
+            from lib_gptq.gpt2 import get_gpt2
+            return get_gpt2(self.checkpoint_path).to(self.device)
         else:
             raise ValueError(f"Unsupported model type: {self.model_type}")
         
