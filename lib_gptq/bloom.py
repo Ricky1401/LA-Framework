@@ -113,6 +113,96 @@ def bloom_sequential(model, dataloader, dev, means=None, stds=None):
     return quantizers
 
 @torch.no_grad()
+def bloom_sequential_ext(args, model, dataloader, dev, means=None, stds=None):
+    print('Starting ...')
+
+    use_cache = model.config.use_cache
+    model.config.use_cache = False
+    layers = model.transformer.h
+
+    model.transformer.word_embeddings = model.transformer.word_embeddings.to(dev)
+    model.transformer.word_embeddings_layernorm = model.transformer.word_embeddings_layernorm.to(dev)
+    layers[0] = layers[0].to(dev)
+
+    dtype = next(iter(model.parameters())).dtype
+    inps = torch.zeros(
+        (args.nsamples, model.seqlen, model.config.hidden_size), dtype=dtype, device=dev
+    )
+    cache = {'i': 0, 'attention_mask': None, 'alibi': None}
+
+    class Catcher(nn.Module):
+        def __init__(self, module):
+            super().__init__()
+            self.module = module
+        def forward(self, inp, **kwargs):
+            inps[cache['i']] = inp
+            cache['i'] += 1
+            cache['attention_mask'] = kwargs['attention_mask']
+            cache['alibi'] = kwargs['alibi']
+            raise ValueError
+    layers[0] = Catcher(layers[0])
+    for batch in dataloader:
+        try:
+            model(batch[0].to(dev))
+        except ValueError:
+            pass
+    layers[0] = layers[0].module
+
+    layers[0] = layers[0].cpu()
+    model.transformer.word_embeddings = model.transformer.word_embeddings.cpu()
+    model.transformer.word_embeddings_layernorm = model.transformer.word_embeddings_layernorm.cpu()
+    torch.cuda.empty_cache()
+
+    outs = torch.zeros_like(inps)
+    attention_mask = cache['attention_mask']
+    alibi = cache['alibi']
+
+    print('Ready.')
+
+    quantizers = {}
+    for i in range(len(layers)):
+        layer = layers[i].to(dev)
+
+        subset = find_layers(layer)
+        gptq = {}
+        for name in subset:
+            gptq[name] = GPTQ(subset[name])
+            gptq[name].quantizer = Quantizer()
+            gptq[name].quantizer.configure(
+                args.wbits, perchannel=True, sym=args.sym, mse=False
+            )
+
+        def add_batch(name):
+            def tmp(_, inp, out):
+                gptq[name].add_batch(inp[0].data, out.data)
+            return tmp
+        handles = []
+        for name in subset:
+            handles.append(subset[name].register_forward_hook(add_batch(name)))
+        for j in range(args.nsamples):
+            outs[j] = layer(inps[j].unsqueeze(0), attention_mask=attention_mask, alibi=alibi)[0]
+        for h in handles:
+            h.remove()
+
+        for name in subset:
+            print(i, name)
+            print('Quantizing ...')
+            gptq[name].fasterquant(percdamp=args.percdamp, groupsize=args.groupsize)
+            quantizers['transformer.h.%d.%s' % (i, name)] = gptq[name].quantizer
+        for j in range(args.nsamples):
+            outs[j] = layer(inps[j].unsqueeze(0), attention_mask=attention_mask, alibi=alibi)[0]
+
+        layers[i] = layer.cpu() 
+        del gptq 
+        torch.cuda.empty_cache()
+
+        inps, outs = outs, inps
+
+    model.config.use_cache = use_cache
+
+    return quantizers
+
+@torch.no_grad()
 def bloom_eval(model, testenc, dev):
     print('Evaluation...')
 

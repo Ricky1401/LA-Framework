@@ -37,15 +37,14 @@ class Quantizer:
             from lib_gptq.opt import opt_sequential_ext
             quantizers = opt_sequential_ext(self.args, self.model, dataloader, self.device)
         elif self.model_type == "llama":
-            from lib_gptq.llama import llama_sequential
-            quantizers = llama_sequential(self.model, dataloader, self.device)
+            from lib_gptq.llama import llama_sequential_ext
+            quantizers = llama_sequential_ext(self.args, self.model, dataloader, self.device)
         elif self.model_type == "bloom":
-            from lib_gptq.bloom import bloom_sequential
-            quantizers = bloom_sequential(self.model, dataloader, self.device)
+            from lib_gptq.bloom import bloom_sequential_ext
+            quantizers = bloom_sequential_ext(self.args, self.model, dataloader, self.device)
         elif self.model_type == "gpt2":
-            # You need to implement gpt2_sequential if not present
-            from lib_gptq.gpt2 import gpt2_sequential
-            quantizers = gpt2_sequential(self.model, dataloader, self.device)
+            from lib_gptq.gpt2 import gpt2_sequential_ext
+            quantizers = gpt2_sequential_ext(self.args, self.model, dataloader, self.device)
         else:
             raise ValueError(f"Unsupported model type: {self.model_type}")
 
