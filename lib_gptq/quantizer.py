@@ -35,7 +35,7 @@ class Quantizer:
         save_path = self.args.save
         if self.model_type == "opt":
             from lib_gptq.opt import opt_sequential_ext
-            quantizers = opt_sequential_ext(self.model, dataloader, self.device)
+            quantizers = opt_sequential_ext(self.args, self.model, dataloader, self.device)
         elif self.model_type == "llama":
             from lib_gptq.llama import llama_sequential
             quantizers = llama_sequential(self.model, dataloader, self.device)
