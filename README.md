@@ -43,8 +43,8 @@ This allows you to launch the entire distillation process with a single command.
 
 This framework wraps GPTQ to support quantization of various LLM architectures. Example usage:
 
-1. Install dependencies (including `transformers` and `gptq`).
-2. Prepare your model checkpoint and calibration dataset.
+1. Install dependencies (you can use the previous enviroment by including also `transformers`).
+2. Download your model checkpoint.
 3. Run quantization using the provided interface:
 
 ```python
