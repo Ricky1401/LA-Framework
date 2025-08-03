@@ -11,6 +11,8 @@ This framework provides an integrated interface for compressing Large Language M
 - **Distillation**: Distill large teacher models into smaller student models using MiniLLM, enabling efficient training and deployment.
 - **Unified Interface**: Simple Python classes and scripts to perform both quantization and distillation with minimal code changes.
 
+> **Note:** Both quantization and distillation require a CUDA-capable GPU and the CUDA toolkit/libraries to be installed.
+
 ## Distillation - MiniLLM
 
 This framework leverages MiniLLM for distillation:
