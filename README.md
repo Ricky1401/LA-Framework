@@ -31,24 +31,13 @@ huggingface-cli download MiniLLM/dolly --repo-type dataset ./data/dolly/
 python main.py dist
 ```
 
-**Python usage example:**
+When you run `python main.py dist`, the main script:
+- Instantiates the teacher and student models with their checkpoint paths.
+- Creates a Distiller object with these models.
+- Enables supervised fine-tuning for the teacher (if needed).
+- Calls the distill() method to perform the full distillation workflow automatically.
 
-You can also use the `Distiller` class directly in your main script to automate the distillation process:
-
-```python
-from distiller import Distiller
-
-class Model:
-    def __init__(self, name, checkpoint_path):
-        self.name = name
-        self.checkpoint_path = checkpoint_path
-
-teacher = Model("gpt2-base", "./checkpoints/gpt2-base")
-student = Model("facebook-125m", "./checkpoints/facebook-125m")
-distiller = Distiller(teacher, student)
-distiller.enable_sft_teacher()
-distiller.distill()
-```
+This allows you to launch the entire distillation process with a single command.
 
 ## Quantization - GPTQ
 
