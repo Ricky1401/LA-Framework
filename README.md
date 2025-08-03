@@ -32,10 +32,10 @@ python main.py dist
 ```
 
 When you run `python main.py dist`, the main script:
-- Instantiates the teacher and student models with their checkpoint paths.
-- Creates a Distiller object with these models.
+- Instantiates the teacher and student models based on the specified checkpoint paths.
+- Creates a `Distiller` object with these models.
 - Enables supervised fine-tuning for the teacher (if needed).
-- Calls the distill() method to perform the full distillation workflow automatically.
+- Calls the `distill()` method to perform the full distillation workflow automatically.
 
 This allows you to launch the entire distillation process with a single command.
 
