@@ -1,5 +1,5 @@
 from distiller import Distiller
-from lib_gptq.quantizer import Quantizer
+from quantizer import Quantizer
 
 class Model:
     def __init__(self, name, checkpoint_path):
@@ -10,6 +10,11 @@ def generate_args():
     import argparse
 
     parser = argparse.ArgumentParser()
+    parser.add_argument(
+        'method', type=str,
+        choices=['quant', 'dist'],
+        help='Compression method to perform.'
+    )
     parser.add_argument(
         '--model_type', type=str,
         choices=['opt', 'llama', 'bloom', 'gpt2'],
@@ -92,9 +97,10 @@ def generate_args():
     return args
 
 if __name__ == "__main__":
-    method = "quantization"  # or "distillation", depending on your use case
+    args = generate_args()
+    method = args.method # "quant" or "dist", depending on your use case
 
-    if method == "quantization":
+    if method == "quant":
         args = generate_args()
         args.model_type = "opt"  # Example model type
         args.checkpoint_path = "./checkpoints/facebook-125m"  # Example checkpoint path
@@ -105,7 +111,7 @@ if __name__ == "__main__":
         quantizer = Quantizer(args)
         quantizer.quantize()
 
-    elif method == "distillation":
+    elif method == "dist":
         # Example checkpoint paths (update as needed)
         teacher = Model("gpt2-base", "./checkpoints/gpt2-base")
         #teacher = Model("facebook-125m", "./checkpoints/facebook-125m")
