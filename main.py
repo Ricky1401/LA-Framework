@@ -3,9 +3,6 @@ from quantizer import Quantizer
 from argutils import generate_args
 from evalutils import *
 
-from lib_gptq.gptq import * 
-from lib_gptq.modelutils import *
-from lib_gptq.quant import *
 
 
 
@@ -20,7 +17,7 @@ if __name__ == "__main__":
 
     if method == "quant":
         # Example for OPT
-    
+        """
         args.model_type = "opt"  # Example model type
         args.checkpoint_path = "./checkpoints/facebook-350m"  # Example checkpoint path
         args.dataset = "c4"  # Example dataset
@@ -33,7 +30,7 @@ if __name__ == "__main__":
         args.dataset = "wikitext2"
         args.wbits = 4
         args.save = "./results/quantized_model/gpt2-base"
-        """
+        
 
         quantizer = Quantizer(args)
         quantizer.quantize()
