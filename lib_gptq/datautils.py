@@ -88,6 +88,9 @@ def get_c4(nsamples, seed, seqlen, model):
             tmp = tokenizer(valdata[i]['text'], return_tensors='pt')
             if tmp.input_ids.shape[1] >= seqlen:
                 break
+        if tmp.input_ids.shape[1] - seqlen - 1 <= 0:
+            print(i, tmp.input_ids.shape)
+            input("Enter to continue:")
         i = random.randint(0, tmp.input_ids.shape[1] - seqlen - 1)
         j = i + seqlen
         valenc.append(tmp.input_ids[:, i:j])
