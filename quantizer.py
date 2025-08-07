@@ -1,8 +1,9 @@
 from lib_gptq.datautils import *
 import shutil
+from lib_gptq.modelutils import DEV
 
 class Quantizer:
-    def __init__(self, args, device="cuda"):
+    def __init__(self, args, device=DEV):
         self.args = args
         self.model_type = args.model_type.lower()
         self.checkpoint_path = args.checkpoint_path
