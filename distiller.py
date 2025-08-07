@@ -45,13 +45,18 @@ class Distiller:
         #os.system(f"bash minillm/scripts/generic/sft/sft_custom.sh minillm {self.teacher_model.name} {self.teacher_model.checkpoint_path}")
         self.teacher_model.checkpoint_path = f"results/{self.teacher_model.name}/train/sft/e1-bs2-lr0.0005-G1-N1-NN1/5717"
 
-    def fix_vocabulary(self, ckpt_path1, ckpt_path2):
+    def fix_vocabulary(self):
         """
         Loads tokenizers from two checkpoints, finds the smallest vocabulary size,
         resizes both models' embeddings, and saves the updated models and tokenizers
         back to their checkpoint directories.
         """
         # Load tokenizers
+        ckpt_path1 = self.teacher_model.checkpoint_path
+        ckpt_path2 = self.student_model.checkpoint_path
+        save_path1 = str(ckpt_path1).replace("checkpoints", "results/resized_model")
+        save_path2 = str(ckpt_path2).replace("checkpoints", "results/resized_model")
+
         tokenizer1 = AutoTokenizer.from_pretrained(ckpt_path1)
         tokenizer2 = AutoTokenizer.from_pretrained(ckpt_path2)
 
@@ -73,10 +78,13 @@ class Distiller:
         model2.resize_token_embeddings(min_vocab_size)
 
         # Save updated models and shared tokenizer
-        model1.save_pretrained(ckpt_path1)
-        model2.save_pretrained(ckpt_path2)
-        shared_tokenizer.save_pretrained(ckpt_path1)
-        shared_tokenizer.save_pretrained(ckpt_path2)
+        model1.save_pretrained(save_path1)
+        model2.save_pretrained(save_path2)
+        shared_tokenizer.save_pretrained(save_path1)
+        shared_tokenizer.save_pretrained(save_path2)
+
+        self.teacher_model.checkpoint_path = save_path1
+        self.student_model.checkpoint_path = save_path2
 
         print(f"Both models and tokenizers resized to vocab size {min_vocab_size} and saved.")
 
@@ -92,7 +100,7 @@ class Distiller:
         print(f"Distilling from {self.teacher_model.name} to {self.student_model.name}")
         self.process_data_dolly()
         self.perform_sft_teacher()
-        self.fix_vocabulary(self.teacher_model.checkpoint_path, self.student_model.checkpoint_path)
+        self.fix_vocabulary()
         os.system(f"bash minillm/scripts/generic/minillm/train_custom.sh minillm {self.student_model.name} {self.student_model.checkpoint_path} {self.teacher_model.name} {self.teacher_model.checkpoint_path}")
 
 
