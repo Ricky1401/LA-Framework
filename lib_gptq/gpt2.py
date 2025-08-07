@@ -155,7 +155,7 @@ def gpt2_sequential_ext(args, model, dataloader, dev):
     attention_mask = cache['attention_mask']
 
     print('Ready.')
-
+    input(f"The model has {len(layers)} layers. Press Enter to continue...")
     quantizers = {}
     for i in range(len(layers)):
         layer = layers[i].to(dev)

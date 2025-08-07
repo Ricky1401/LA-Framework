@@ -46,8 +46,6 @@ class Quantizer:
         elif self.model_type == "gpt2":
             from lib_gptq.gpt2 import gpt2_sequential_ext
             quantizers = gpt2_sequential_ext(self.args, self.model, dataloader, self.device)
-            from lib_gptq.gpt2 import gpt2_pack3
-            gpt2_pack3(self.model, quantizers)
         else:
             raise ValueError(f"Unsupported model type: {self.model_type}")
 
