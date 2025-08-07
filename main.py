@@ -45,9 +45,9 @@ if __name__ == "__main__":
         distiller.distill()
 
     elif method == "eval":
-        # Example for GPT-2 evaluation
-        args.model_type = "gpt2"
-        args.checkpoint_path = "./checkpoints/gpt2-base"
+        # Example
+        args.model_type = "opt"
+        args.checkpoint_path = "./results/quantized_model/facebook-350m" 
         args.seqlen = 2048  # Example sequence length
         args.nsamples = 1000  # Example number of samples
         args.seed = 42  # Example seed for reproducibility
