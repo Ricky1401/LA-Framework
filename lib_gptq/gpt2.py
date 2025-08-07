@@ -114,9 +114,6 @@ def gpt2_sequential(model, dataloader, dev):
 @torch.no_grad()
 def gpt2_sequential_ext(args, model, dataloader, dev):
     print('Starting ...')
-    for i, layer in enumerate(model.transformer.h):
-        print(f"Layer {i}: {layer}")
-        print("Children:", list(layer.named_children()))
     use_cache = model.config.use_cache
     model.config.use_cache = False
     layers = model.transformer.h
@@ -124,6 +121,7 @@ def gpt2_sequential_ext(args, model, dataloader, dev):
     model.transformer.wte = model.transformer.wte.to(dev)
     model.transformer.wpe = model.transformer.wpe.to(dev)
     layers[0] = layers[0].to(dev)
+    print(layers)
 
     dtype = next(iter(model.parameters())).dtype
     inps = torch.zeros(
@@ -141,14 +139,17 @@ def gpt2_sequential_ext(args, model, dataloader, dev):
             cache['attention_mask'] = kwargs.get('attention_mask', None)
             raise ValueError
     layers[0] = Catcher(layers[0])
+    print(layers)
     for batch in dataloader:
         try:
             model(batch[0].to(dev))
         except ValueError:
             pass
     layers[0] = layers[0].module
+    print(layers)
 
     layers[0] = layers[0].cpu()
+    print(layers)
     model.transformer.wte = model.transformer.wte.cpu()
     model.transformer.wpe = model.transformer.wpe.cpu()
     torch.cuda.empty_cache()
