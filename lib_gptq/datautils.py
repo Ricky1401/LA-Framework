@@ -31,8 +31,8 @@ def get_wikitext2(nsamples, seed, seqlen, model):
 
 def get_ptb(nsamples, seed, seqlen, model):
     from datasets import load_dataset
-    traindata = load_dataset('ptb_text_only')['train']
-    valdata = load_dataset('ptb_text_only')['validation']
+    traindata = load_dataset('ptb_text_only', 'penn_treebank', split='train')
+    valdata = load_dataset('ptb_text_only', 'penn_treebank', split='validation')
 
     from transformers import AutoTokenizer 
     tokenizer = AutoTokenizer.from_pretrained(model, use_fast=False)
