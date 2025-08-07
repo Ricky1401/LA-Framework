@@ -1,5 +1,5 @@
 from lib_gptq.datautils import *
-
+import shutil
 
 class Quantizer:
     def __init__(self, args, device="cuda"):
@@ -33,6 +33,7 @@ class Quantizer:
     def quantize(self):
         dataloader = self.dataloader
         save_path = self.args.save
+        shutil.copytree(self.checkpoint_path, save_path, dirs_exist_ok=True)
         if self.model_type == "opt":
             from lib_gptq.opt import opt_sequential_ext
             quantizers = opt_sequential_ext(self.args, self.model, dataloader, self.device)
