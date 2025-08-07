@@ -331,7 +331,7 @@ def opt_eval(model, testenc, dev):
 def opt_pack3(model, quantizers):
     layers = find_layers(model)
     layers = {n: layers[n] for n in quantizers}
-    make_quant3(model, quantizers, faster=args.faster_kernel)
+    make_quant3(model, quantizers)
     qlayers = find_layers(model, [Quant3Linear])
     print('Packing ...')
     for name in qlayers:
