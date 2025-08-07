@@ -158,7 +158,7 @@ def gpt2_sequential_ext(args, model, dataloader, dev):
     quantizers = {}
     for i in range(len(layers)):
         layer = layers[i].to(dev)
-        input(f"This layer has children:{layer.named_children()}")
+        input(f"This layer has children:{list(layer.named_children())}")
         subset = find_layers(layer, name="Bobby")
         print(f"Layer {i} has {len(subset)} sub-layers: {subset}")
         gptq = {}
