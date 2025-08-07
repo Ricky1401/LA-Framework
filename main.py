@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
     if method == "quant":
         # Example for OPT
-        
+        """
         args.model_type = "opt"  # Example model type
         args.checkpoint_path = "./checkpoints/facebook-350m"  # Example checkpoint path
         args.dataset = "c4"  # Example dataset
@@ -28,7 +28,7 @@ if __name__ == "__main__":
         args.dataset = "c4"
         args.wbits = 4
         args.save = "./results/quantized_model/gpt2-base"
-        """
+        
 
         quantizer = Quantizer(args)
         quantizer.quantize()
@@ -46,8 +46,8 @@ if __name__ == "__main__":
 
     elif method == "eval":
         # Example
-        args.model_type = "opt"
-        args.checkpoint_path = "./results/quantized_model/facebook-350m" 
+        args.model_type = "gpt"
+        args.checkpoint_path = "./results/quantized_model/fgpt2-base" 
         args.seqlen = 2048  # Example sequence length
         args.nsamples = 1000  # Example number of samples
         args.seed = 42  # Example seed for reproducibility

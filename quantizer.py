@@ -40,13 +40,9 @@ class Quantizer:
         elif self.model_type == "llama":
             from lib_gptq.llama import llama_sequential_ext
             quantizers = llama_sequential_ext(self.args, self.model, dataloader, self.device)
-            from lib_gptq.llama import llama_pack3
-            llama_pack3(self.model, quantizers)
         elif self.model_type == "bloom":
             from lib_gptq.bloom import bloom_sequential_ext
             quantizers = bloom_sequential_ext(self.args, self.model, dataloader, self.device)
-            from lib_gptq.bloom import bloom_pack3
-            bloom_pack3(self.model, quantizers)
         elif self.model_type == "gpt2":
             from lib_gptq.gpt2 import gpt2_sequential_ext
             quantizers = gpt2_sequential_ext(self.args, self.model, dataloader, self.device)
