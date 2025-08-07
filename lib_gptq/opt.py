@@ -277,7 +277,8 @@ def opt_eval(model, testenc, dev):
     for i in range(len(layers)):
         print(i)
         layer = layers[i].to(dev)
-
+        
+        """
         if args.nearest:
             subset = find_layers(layer)
             for name in subset:
@@ -290,7 +291,7 @@ def opt_eval(model, testenc, dev):
                 subset[name].weight.data = quantize(
                     W, quantizer.scale, quantizer.zero, quantizer.maxq
                 ).to(next(iter(layer.parameters())).dtype)
-
+        """
         for j in range(nsamples):
             outs[j] = layer(inps[j].unsqueeze(0), attention_mask=attention_mask)[0]
         layers[i] = layer.cpu()
