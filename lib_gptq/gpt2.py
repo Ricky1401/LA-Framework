@@ -161,6 +161,7 @@ def gpt2_sequential_ext(args, model, dataloader, dev):
         layer = layers[i].to(dev)
 
         subset = find_layers(layer)
+        print(f"Layer {i} has {len(subset)} sub-layers: {subset}")
         gptq = {}
         for name in subset:
             gptq[name] = GPTQ(subset[name])
@@ -180,7 +181,7 @@ def gpt2_sequential_ext(args, model, dataloader, dev):
             outs[j] = layer(inps[j].unsqueeze(0), attention_mask=attention_mask)[0]
         for h in handles:
             h.remove()
-        input(f"Layer {i} has {len(subset)} sub-layers: {subset}. Press Enter to continue...")
+
         for name in subset:
             print(i, name)
             print('Quantizing ...')
