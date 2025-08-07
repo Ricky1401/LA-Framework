@@ -22,7 +22,7 @@ def eval_model(args):
 
     elif args.model_type == 'gpt2':
         model = get_gpt2(args.checkpoint_path)
-        datasets = ['c4', 'wikitext2', 'ptb'] 
+        datasets = ['c4', 'wikitext2'] 
         for dataset in datasets: 
             dataloader, testloader = get_loaders(
                 dataset, seed=args.seed, model=args.checkpoint_path, seqlen=args.seqlen
