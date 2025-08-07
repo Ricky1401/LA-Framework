@@ -254,6 +254,7 @@ def gpt2_eval(model, testenc, dev):
         print(i)
         layer = layers[i].to(dev)
 
+        """
         # RTN baseline if needed
         if hasattr(model, 'args') and getattr(model.args, 'nearest', False):
             subset = find_layers(layer)
@@ -267,7 +268,7 @@ def gpt2_eval(model, testenc, dev):
                 subset[name].weight.data = quantize(
                     W, quantizer.scale, quantizer.zero, quantizer.maxq
                 ).to(next(iter(layer.parameters())).dtype)
-
+        """
         for j in range(nsamples):
             outs[j] = layer(inps[j].unsqueeze(0), attention_mask=attention_mask)[0]
         layers[i] = layer.cpu()
