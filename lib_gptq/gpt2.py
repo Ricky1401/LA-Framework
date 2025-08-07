@@ -121,7 +121,6 @@ def gpt2_sequential_ext(args, model, dataloader, dev):
     model.transformer.wte = model.transformer.wte.to(dev)
     model.transformer.wpe = model.transformer.wpe.to(dev)
     layers[0] = layers[0].to(dev)
-    print(layers)
 
     dtype = next(iter(model.parameters())).dtype
     inps = torch.zeros(
@@ -139,17 +138,14 @@ def gpt2_sequential_ext(args, model, dataloader, dev):
             cache['attention_mask'] = kwargs.get('attention_mask', None)
             raise ValueError
     layers[0] = Catcher(layers[0])
-    print(layers)
     for batch in dataloader:
         try:
             model(batch[0].to(dev))
         except ValueError:
             pass
     layers[0] = layers[0].module
-    print(layers)
 
     layers[0] = layers[0].cpu()
-    print(layers)
     model.transformer.wte = model.transformer.wte.cpu()
     model.transformer.wpe = model.transformer.wpe.cpu()
     torch.cuda.empty_cache()
@@ -162,7 +158,7 @@ def gpt2_sequential_ext(args, model, dataloader, dev):
     quantizers = {}
     for i in range(len(layers)):
         layer = layers[i].to(dev)
-
+        input(f"This layer has children:{layer.named_children()}")
         subset = find_layers(layer, name="Bobby")
         print(f"Layer {i} has {len(subset)} sub-layers: {subset}")
         gptq = {}
