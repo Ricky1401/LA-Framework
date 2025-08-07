@@ -60,6 +60,10 @@ class Distiller:
         tokenizer1 = AutoTokenizer.from_pretrained(ckpt_path1)
         tokenizer2 = AutoTokenizer.from_pretrained(ckpt_path2)
 
+        if tokenizer1.vocab_size == tokenizer2.vocab_size:
+            print("Both tokenizers have the same vocabulary size. No resizing needed.")
+            return
+
         # Find the smallest vocab size
         min_vocab_size = min(tokenizer1.vocab_size, tokenizer2.vocab_size)
 
