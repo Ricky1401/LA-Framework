@@ -154,14 +154,10 @@ def gpt2_sequential_ext(args, model, dataloader, dev):
     attention_mask = cache['attention_mask']
 
     print('Ready.')
-    input(f"The model has {len(layers)} layers. Press Enter to continue...")
     quantizers = {}
     for i in range(len(layers)):
         layer = layers[i].to(dev)
-        print(f"Layer type: {type(layer)}")
-        input(f"This layer has children:{list(layer.named_children())}")
         subset = find_layers_gpt(layer)
-        print(f"Layer {i} has {len(subset)} sub-layers: {subset}")
         gptq = {}
         for name in subset:
             gptq[name] = GPTQ(subset[name])
