@@ -80,7 +80,7 @@ def get_c4(nsamples, seed, seqlen, model):
         trainloader.append((inp, tar))
 
     import random
-    random.seed(0)
+    random.seed(1)
     valenc = []
     for _ in range(256):
         while True:
