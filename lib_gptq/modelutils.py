@@ -24,7 +24,6 @@ def find_layers_gpt(module, layers=[Conv1D, nn.Linear], name=''):
 
     # Recursively check children
     for name1, child in module.named_children():
-        print(f"Checking child: {name1} of {name}")
         full_name = f"{name}.{name1}" if name else name1
         res.update(find_layers_gpt(child, layers=layers, name=full_name))
 
