@@ -53,7 +53,6 @@ if __name__ == "__main__":
         # Example for GPT-2 evaluation
         args.model_type = "gpt2"
         args.checkpoint_path = "./checkpoints/gpt2-base"
-        args.dataset = "c4"
         args.seqlen = 1024  # Example sequence length
         args.nsamples = 1000  # Example number of samples
         args.seed = 42  # Example seed for reproducibility
