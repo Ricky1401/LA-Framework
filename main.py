@@ -12,11 +12,21 @@ if __name__ == "__main__":
     method = args.method # "quant" or "dist", depending on your use case
 
     if method == "quant":
+        # Example for OPT
+        """
         args.model_type = "opt"  # Example model type
         args.checkpoint_path = "./checkpoints/facebook-125m"  # Example checkpoint path
         args.dataset = "c4"  # Example dataset
         args.wbits = 4  # Example bits for quantization
         args.save = "./results/quantized_model/facebook-125m"  # Example save path
+        """
+
+        # Example for GPT-2
+        args.model_type = "gpt2"
+        args.checkpoint_path = "./checkpoints/gpt2-base"
+        args.dataset = "wikitext2"
+        args.wbits = 4
+        args.save = "./results/quantized_model/gpt2-base"
 
         quantizer = Quantizer(args)
         quantizer.quantize()
