@@ -203,6 +203,100 @@ def gpt2_sequential_ext(args, model, dataloader, dev):
 
     return quantizers
 
+@torch.no_grad()
+def gpt2_eval(model, testenc, dev):
+    print('Evaluating ...')
+
+    testenc = testenc.input_ids
+    nsamples = testenc.numel() // model.seqlen
+
+    use_cache = model.config.use_cache
+    model.config.use_cache = False
+    layers = model.transformer.h
+
+    model.transformer.wte = model.transformer.wte.to(dev)
+    model.transformer.wpe = model.transformer.wpe.to(dev)
+    layers[0] = layers[0].to(dev)
+
+    dtype = next(iter(model.parameters())).dtype
+    inps = torch.zeros(
+        (nsamples, model.seqlen, model.config.n_embd), dtype=dtype, device=dev
+    )
+    cache = {'i': 0, 'attention_mask': None}
+
+    class Catcher(nn.Module):
+        def __init__(self, module):
+            super().__init__()
+            self.module = module
+        def forward(self, inp, **kwargs):
+            inps[cache['i']] = inp
+            cache['i'] += 1
+            cache['attention_mask'] = kwargs.get('attention_mask', None)
+            raise ValueError
+    layers[0] = Catcher(layers[0])
+    for i in range(nsamples):
+        batch = testenc[:, (i * model.seqlen):((i + 1) * model.seqlen)].to(dev)
+        try:
+            model(batch)
+        except ValueError:
+            pass
+    layers[0] = layers[0].module
+
+    layers[0] = layers[0].cpu()
+    model.transformer.wte = model.transformer.wte.cpu()
+    model.transformer.wpe = model.transformer.wpe.cpu()
+    torch.cuda.empty_cache()
+
+    outs = torch.zeros_like(inps)
+    attention_mask = cache['attention_mask']
+
+    for i in range(len(layers)):
+        print(i)
+        layer = layers[i].to(dev)
+
+        # RTN baseline if needed
+        if hasattr(model, 'args') and getattr(model.args, 'nearest', False):
+            subset = find_layers(layer)
+            for name in subset:
+                quantizer = Quantizer()
+                quantizer.configure(
+                    model.args.wbits, perchannel=True, sym=model.args.sym, mse=False
+                )
+                W = subset[name].weight.data
+                quantizer.find_params(W, weight=True)
+                subset[name].weight.data = quantize(
+                    W, quantizer.scale, quantizer.zero, quantizer.maxq
+                ).to(next(iter(layer.parameters())).dtype)
+
+        for j in range(nsamples):
+            outs[j] = layer(inps[j].unsqueeze(0), attention_mask=attention_mask)[0]
+        layers[i] = layer.cpu()
+        del layer
+        torch.cuda.empty_cache()
+        inps, outs = outs, inps
+
+    model.transformer.ln_f = model.transformer.ln_f.to(dev)
+    model.lm_head = model.lm_head.to(dev)
+
+    testenc = testenc.to(dev)
+    nlls = []
+    for i in range(nsamples):
+        hidden_states = inps[i].unsqueeze(0)
+        hidden_states = model.transformer.ln_f(hidden_states)
+        lm_logits = model.lm_head(hidden_states)
+        shift_logits = lm_logits[:, :-1, :].contiguous()
+        shift_labels = testenc[
+            :, (i * model.seqlen):((i + 1) * model.seqlen)
+        ][:, 1:]
+        loss_fct = nn.CrossEntropyLoss()
+        loss = loss_fct(shift_logits.view(-1, shift_logits.size(-1)), shift_labels.view(-1))
+        neg_log_likelihood = loss.float() * model.seqlen
+        nlls.append(neg_log_likelihood)
+    ppl = torch.exp(torch.stack(nlls).sum() / (nsamples * model.seqlen))
+    print(ppl.item())
+
+    model.config.use_cache = use_cache
+
 if __name__ == '__main__':
     import argparse
     from datautils import *

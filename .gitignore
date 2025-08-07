@@ -3,3 +3,4 @@ results/
 data/
 local_venv/
 quantized_models/
+__pycache__/
