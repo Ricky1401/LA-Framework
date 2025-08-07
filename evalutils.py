@@ -12,7 +12,7 @@ from lib_gptq.opt import opt_eval, get_opt
 def eval_model(args):
     if args.model_type == 'opt':
         model = get_opt(args.checkpoint_path)
-        datasets = ['c4'] 
+        datasets = ['c4', 'wikitext2'] 
         for dataset in datasets: 
             dataloader, testloader = get_loaders(
                 dataset, seed=args.seed, model=args.checkpoint_path, seqlen=args.seqlen
