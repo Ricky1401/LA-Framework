@@ -298,6 +298,20 @@ def gpt2_eval(model, testenc, dev):
 
     model.config.use_cache = use_cache
 
+    def gpt2_pack3(model, quantizers):
+        layers = find_layers(model)
+        layers = {n: layers[n] for n in quantizers}
+        make_quant3(model, quantizers)
+        qlayers = find_layers(model, [Quant3Linear])
+        print('Packing ...')
+        for name in qlayers:
+            print(name)
+            quantizers[name] = quantizers[name].cpu()
+            qlayers[name].pack(layers[name], quantizers[name].scale, quantizers[name].zero)
+        print('Done.')
+        return model
+
+
 if __name__ == '__main__':
     import argparse
     from datautils import *
