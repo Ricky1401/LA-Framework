@@ -4,8 +4,6 @@ from argutils import generate_args
 from evalutils import *
 
 
-
-
 class Model:
     def __init__(self, name, checkpoint_path):
         self.name = name

@@ -1,9 +1,6 @@
 import torch
 import torch.nn as nn
 
-from lib_gptq.gptq import *
-from lib_gptq.modelutils import *
-from lib_gptq.quant import *
 from lib_gptq.datautils import *
 
 from lib_gptq.gpt2 import gpt2_eval, get_gpt2
