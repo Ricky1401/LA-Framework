@@ -37,8 +37,6 @@ class Quantizer:
         if self.model_type == "opt":
             from lib_gptq.opt import opt_sequential_ext
             quantizers = opt_sequential_ext(self.args, self.model, dataloader, self.device)
-            from lib_gptq.opt import opt_pack3
-            opt_pack3(self.model, quantizers)
         elif self.model_type == "llama":
             from lib_gptq.llama import llama_sequential_ext
             quantizers = llama_sequential_ext(self.args, self.model, dataloader, self.device)
