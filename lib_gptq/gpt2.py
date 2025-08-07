@@ -114,7 +114,9 @@ def gpt2_sequential(model, dataloader, dev):
 @torch.no_grad()
 def gpt2_sequential_ext(args, model, dataloader, dev):
     print('Starting ...')
-
+    for i, layer in enumerate(model.transformer.h):
+        print(f"Layer {i}: {layer}")
+        print("Children:", list(layer.named_children()))
     use_cache = model.config.use_cache
     model.config.use_cache = False
     layers = model.transformer.h
