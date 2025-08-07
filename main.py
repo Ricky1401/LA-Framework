@@ -46,7 +46,7 @@ if __name__ == "__main__":
 
     elif method == "eval":
         # Example
-        args.model_type = "gpt"
+        args.model_type = "gpt2"
         args.checkpoint_path = "./results/quantized_model/gpt2-base" 
         args.seqlen = 2048  # Example sequence length
         args.nsamples = 1000  # Example number of samples

@@ -27,4 +27,4 @@ def eval_model(args):
             print(dataset)
             gpt2_eval(model, testloader, torch.device('cuda:0'))
     else:
-        raise ValueError(f"Unsupported model type for evaluation: {model.model_type}")
+        raise ValueError(f"Unsupported model type for evaluation: {args.model_type}")
