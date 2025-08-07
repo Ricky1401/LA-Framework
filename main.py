@@ -12,7 +12,6 @@ if __name__ == "__main__":
     method = args.method # "quant" or "dist", depending on your use case
 
     if method == "quant":
-        args = generate_args()
         args.model_type = "opt"  # Example model type
         args.checkpoint_path = "./checkpoints/facebook-125m"  # Example checkpoint path
         args.dataset = "c4"  # Example dataset
