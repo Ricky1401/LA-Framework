@@ -5,7 +5,7 @@ def generate_args():
     parser = argparse.ArgumentParser()
     parser.add_argument(
         'method', type=str,
-        choices=['quant', 'dist'],
+        choices=['quant', 'dist', 'eval'],
         help='Compression method to perform.'
     )
     parser.add_argument(
