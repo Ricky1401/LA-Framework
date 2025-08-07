@@ -160,7 +160,7 @@ def gpt2_sequential_ext(args, model, dataloader, dev):
         layer = layers[i].to(dev)
         print(f"Layer type: {type(layer)}")
         input(f"This layer has children:{list(layer.named_children())}")
-        subset = find_layers_gpt(layer, name="Bobby")
+        subset = find_layers_gpt(layer)
         print(f"Layer {i} has {len(subset)} sub-layers: {subset}")
         gptq = {}
         for name in subset:
