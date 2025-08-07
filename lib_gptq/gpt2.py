@@ -160,7 +160,7 @@ def gpt2_sequential_ext(args, model, dataloader, dev):
     for i in range(len(layers)):
         layer = layers[i].to(dev)
 
-        subset = find_layers(layer)
+        subset = find_layers(layer, name="Bobby")
         print(f"Layer {i} has {len(subset)} sub-layers: {subset}")
         gptq = {}
         for name in subset:
