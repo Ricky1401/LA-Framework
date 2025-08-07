@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-
+from transformers.pytorch_utils import Conv1D
 
 DEV = torch.device('cuda:0')
 
@@ -15,7 +15,7 @@ def find_layers(module, layers=[nn.Conv2d, nn.Linear], name=''):
         ))
     return res
 
-def find_layers_gpt(module, layers=[nn.Conv2d, nn.Linear], name=''):
+def find_layers_gpt(module, layers=[Conv1D, nn.Linear], name=''):
     res = {}
 
     # Match if module is an instance of any specified type
