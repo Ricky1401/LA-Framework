@@ -60,21 +60,23 @@ quantizer.quantize()
 - Supports OPT, LLaMA, BLOOM, and GPT-2.
 - Quantized models are saved and ready for efficient inference.
 
-## Experimental evaluation
+## Experimental Evaluation
 
-To test the performance of the quantization and distillation method I have used the GPTQ built-in evaluation function that estimate the perplexity of the models with respect to the `c4` and `wikitext2` datasets.
+To test the performance of the quantization and distillation method, I used the **GPTQ** built-in evaluation function, which estimates the perplexity of the models on the `c4` and `wikitext2` datasets.
 
-In addition, I have used the [LLMCBench](https://github.com/AboveParadise/LLMCBench/) suite to perform the MMLU accuracy benchmark. Here follows the results:
-      Model             | c4 perp   | wt2 perp  | MMLU
-GPT-2 base              |29,706     |29,951     |0.2299
-GPT-2 quant             |32,029     |33,149     |0.2302
-OPT-350m                |20,929     |22,005     |0.2418
-OPT-350m quant          |22,846     |24,022     |0.2384
-OPT-125m                |24,714     |27,653     |0.2290
-OPT-350m to 125m dist   |25,556     |29,919     |0.2296
-OPT-125m quant          |     |     |
+In addition, I employed the [LLMCBench](https://github.com/AboveParadise/LLMCBench/) suite to perform the **MMLU** accuracy benchmark. The results are shown below:
 
-bash scripts/run_mmlu.sh ../LA-Framework/checkpoints/gpt2-base/
+| Model                  | c4 Perplexity | wt2 Perplexity | MMLU    |
+|------------------------|--------------:|---------------:|--------:|
+| GPT-2 base             | 29,706        | 29,951         | 0.2299  |
+| GPT-2 quant            | 32,029        | 33,149         | 0.2302  |
+| OPT-350m               | 20,929        | 22,005         | 0.2418  |
+| OPT-350m quant         | 22,846        | 24,022         | 0.2384  |
+| OPT-125m               | 24,714        | 27,653         | 0.2290  |
+| OPT-350m → 125m dist.  | 25,556        | 29,919         | 0.2296  |
+| OPT-125m quant         | 27,346        | 31,069         | 0.2417  |
+
+
 
 ## References
 
