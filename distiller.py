@@ -45,6 +45,15 @@ class Distiller:
         os.system(f"bash minillm/scripts/generic/sft/sft_custom.sh minillm {self.teacher_model.name} {self.teacher_model.checkpoint_path}")
         self.teacher_model.checkpoint_path = f"results/{self.teacher_model.name}/train/sft/e1-bs2-lr0.0005-G1-N1-NN1/5717"
 
+    def perform_sft_student(self):
+        """
+        Perform Supervised Fine-Tuning on the student model.
+        """
+        print(f"Supervised Fine-Tuning for {self.student_model.name} at {self.student_model.checkpoint_path}")
+        shutil.copytree(self.student_model.checkpoint_path, f"results/{self.student_model.name}/train/sft/e1-bs2-lr0.0005-G1-N1-NN1/5717", dirs_exist_ok=True)
+        os.system(f"bash minillm/scripts/generic/sft/sft_custom.sh minillm {self.student_model.name} {self.student_model.checkpoint_path}")
+        self.student_model.checkpoint_path = f"results/{self.student_model.name}/train/sft/e1-bs2-lr0.0005-G1-N1-NN1/5717"
+
     def fix_vocabulary(self):
         """
         Loads tokenizers from two checkpoints, finds the smallest vocabulary size,
@@ -91,6 +100,9 @@ class Distiller:
         self.student_model.checkpoint_path = save_path2
 
         print(f"Both models and tokenizers resized to vocab size {min_vocab_size} and saved.")
+        self.perform_sft_teacher(self)
+        self.perform_sft_student(self)
+        
 
 
     def distill(self):
@@ -103,7 +115,7 @@ class Distiller:
             raise FileNotFoundError("One or both models do not exist in the checkpoints directory.")
         print(f"Distilling from {self.teacher_model.name} to {self.student_model.name}")
         self.process_data_dolly()
-        self.perform_sft_teacher()
+        #self.perform_sft_teacher()
         self.fix_vocabulary()
         os.system(f"bash minillm/scripts/generic/minillm/train_custom.sh minillm {self.student_model.name} {self.student_model.checkpoint_path} {self.teacher_model.name} {self.teacher_model.checkpoint_path}")
 

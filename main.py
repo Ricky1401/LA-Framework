@@ -41,7 +41,7 @@ if __name__ == "__main__":
         student = Model("facebook-125m", "./checkpoints/facebook-125m")
 
         distiller = Distiller(teacher, student)
-        #distiller.enable_sft_teacher()
+        distiller.enable_sft_teacher()
         distiller.distill()
 
     elif method == "eval":
