@@ -100,8 +100,8 @@ class Distiller:
         self.student_model.checkpoint_path = save_path2
 
         print(f"Both models and tokenizers resized to vocab size {min_vocab_size} and saved.")
-        self.perform_sft_teacher(self)
-        self.perform_sft_student(self)
+        self.perform_sft_teacher()
+        self.perform_sft_student()
         
 
 
