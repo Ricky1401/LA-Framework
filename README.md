@@ -60,9 +60,18 @@ quantizer.quantize()
 - Supports OPT, LLaMA, BLOOM, and GPT-2.
 - Quantized models are saved and ready for efficient inference.
 
+## Experimental evaluation
+
+To test the performance of the quantization and distillation method I have used the GPTQ built-in evaluation function that estimate the perplexity of the models with respect to the `c4` and `wikitext2` datasets.
+
+In addition, I have used the [LLMCBench](https://github.com/AboveParadise/LLMCBench/) suite to perform the MMLU accuracy benchmark.
+
+
 ## References
 
 - [GPTQ by IST-DASLab](https://github.com/IST-DASLab/gptq)  
   Efficient quantization techniques for LLMs.
 - [MiniLLM in LMOps by Microsoft](https://github.com/microsoft/LMOps/tree/main/minillm)  
   Lightweight LLM distillation and inference framework.
+- [LLMCBench](https://github.com/AboveParadise/LLMCBench/)
+  Rigorously designed benchmark with an in-depth analysis for LLM compression algorithms.
