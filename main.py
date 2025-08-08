@@ -51,7 +51,8 @@ if __name__ == "__main__":
                   ("opt","./checkpoints/facebook-350m"),
                   ("opt","./results/quantized_model/facebook-350m"),
                   ("opt","./checkpoints/facebook-125m"),
-                  ("opt","./results/distilled-facebook-125m/bs16-lr5e-06-G1-N1-NN1-lm1-len512/pe4_rs0.5_nr256_ln_sr_tm0.2/5000")]
+                  ("opt","./results/distilled-facebook-125m/bs16-lr5e-06-G1-N1-NN1-lm1-len512/pe4_rs0.5_nr256_ln_sr_tm0.2/5000"),
+                  ("opt","./results/quantized_model/facebook-125m")]
         
         for model_type, checkpoint_path in models:
             args.model_type = model_type
