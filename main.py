@@ -46,10 +46,17 @@ if __name__ == "__main__":
 
     elif method == "eval":
         # Example
-        args.model_type = "gpt2"
-        args.checkpoint_path = "./results/quantized_model/gpt2-base" 
-        args.seqlen = 2048  # Example sequence length
-        args.nsamples = 1000  # Example number of samples
-        args.seed = 42  # Example seed for reproducibility
-
-        eval_model(args)
+        models = [("gpt2","./checkpoints/gpt2-base"),
+                  ("gpt2","./results/quantized_model/gpt2-base"),
+                  ("opt","./checkpoints/facebook-350m"),
+                  ("opt","./results/quantized_model/facebook-350m"),
+                  ("opt","./checkpoints/facebook-125m"),
+                  ("opt","./results/distilled-facebook-125m/bs16-lr5e-06-G1-N1-NN1-lm1-len512/pe4_rs0.5_nr256_ln_sr_tm0.2/5000")]
+        
+        for model_type, checkpoint_path in models:
+            args.model_type = model_type
+            args.checkpoint_path = checkpoint_path
+            args.seqlen = 2048  # Example sequence length
+            args.nsamples = 1000  # Example number of samples
+            args.seed = 42  # Example seed for reproducibility
+            eval_model(args)

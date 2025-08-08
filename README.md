@@ -64,7 +64,7 @@ quantizer.quantize()
 
 To test the performance of the quantization and distillation method I have used the GPTQ built-in evaluation function that estimate the perplexity of the models with respect to the `c4` and `wikitext2` datasets.
 
-In addition, I have used the [LLMCBench](https://github.com/AboveParadise/LLMCBench/) suite to perform the MMLU accuracy benchmark.
+In addition, I have used the [LLMCBench](https://github.com/AboveParadise/LLMCBench/) suite to perform the MMLU accuracy benchmark. Here follows the results:
 
 
 ## References
